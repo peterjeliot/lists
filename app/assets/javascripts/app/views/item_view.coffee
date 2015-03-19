@@ -20,7 +20,8 @@ class App.views.ItemView extends Backbone.View
     event.stopPropagation()
     @$el.find(".item__children").toggle()
 
-  showFormView: ->
+  showFormView: (event) ->
+    event.stopPropagation()
     formView = new App.views.ItemFormView(@item)
     @listenTo formView, 'item:save', =>
       console.log "save event"
