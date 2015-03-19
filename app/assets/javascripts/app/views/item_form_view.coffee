@@ -15,7 +15,6 @@ class App.views.ItemFormView extends Backbone.View
     for datum in data
       attrName = datum.name.match(/item\[(.*)\]/)[1]
       @item[attrName] = datum.value
-    console.log "/items/#{@item.id}"
     $.ajax({
       type: "PATCH",
       url: "/items/#{@item.id}",
