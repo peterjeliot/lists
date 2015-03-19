@@ -7,4 +7,8 @@ class ItemsController < ApplicationController
       render json: @item.errors.full_messages, status: :unprocessable_entity
     end
   end
+
+  def item_params
+    params.require(:item).permit(:title, :content)
+  end
 end
