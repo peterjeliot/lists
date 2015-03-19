@@ -14,3 +14,12 @@
  *= require_tree .
  *= require_self
  */
+
+.item__children:empty {
+  min-height: 50px;
+  min-width: 100px;
+}
+
+.item__children::after {
+  content: "(Drag here to insert at this level)"
+}

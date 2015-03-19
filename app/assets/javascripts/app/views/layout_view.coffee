@@ -11,8 +11,9 @@ class App.views.LayoutView extends Backbone.View
       @$el.find('.main-list').append itemView.render()
 
     @$el.find(".main-list, .main-list ol").sortable {
-      connectWith: ".main-list, .main-list ol",
-      placeholder: "ui-state-highlight",
+      connectWith: ".main-list, .main-list ol"
+      placeholder: "ui-state-highlight"
       start: (event, ui) ->
         ui.placeholder.height(ui.item.height())
+      distance: 10
     }
