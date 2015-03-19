@@ -9,13 +9,12 @@ class App.views.ItemView extends Backbone.View
     @childViews = (new App.views.ItemView(child) for child in item.children) || []
 
   render: ->
-    $template = $(HandlebarsTemplates['item'](@item))
-    $childList = $template.find(".item__children")
+    @$el.html $(HandlebarsTemplates['item'](@item))
+    @showAttributes()
+    $childList = @$el.find(".item__children")
     for childView in @childViews
       childTemplate = childView.render()
       $childList.append childTemplate
-    @$el.html $template
-    @showAttributes()
     @$el
 
   toggleDisplay: (event) ->
@@ -30,6 +29,5 @@ class App.views.ItemView extends Backbone.View
     @$el.find(".item__attributes").first().html(formView.render())
 
   showAttributes: ->
-    # event.stopPropagation()
     attributesTemplate = HandlebarsTemplates['item_attributes'](@item)
     @$el.find(".item__attributes").first().html(attributesTemplate)

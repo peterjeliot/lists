@@ -15,6 +15,7 @@
  *= require_self
  */
 
+/* This ensures that you can drop into lists without children */
 .item__children:empty {
   min-height: 50px;
   min-width: 100px;

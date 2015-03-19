@@ -19,7 +19,6 @@ class App.views.ItemFormView extends Backbone.View
       type: "PATCH",
       url: "/items/#{@item.id}",
       data: { item: @item },
-      # TODO: Render error on failure
     });
     @trigger("item:save")
     @item
