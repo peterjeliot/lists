@@ -9,9 +9,9 @@ class App.views.ItemView extends Backbone.View
     @childViews = (new App.views.ItemView(child) for child in item.children) || []
 
   render: ->
-    @$el.html $(HandlebarsTemplates['item'](@item))
+    @$el.html $ HandlebarsTemplates['item'](@item)
     @showAttributes()
-    $childList = @$el.find(".item__children")
+    $childList = @$el.find ".item__children"
     for childView in @childViews
       childTemplate = childView.render()
       $childList.append childTemplate
@@ -26,8 +26,8 @@ class App.views.ItemView extends Backbone.View
     formView = new App.views.ItemFormView(@item)
     @listenTo formView, 'item:save', =>
       @showAttributes()
-    @$el.find(".item__attributes").first().html(formView.render())
+    @$el.find(".item__attributes").first().html formView.render()
 
   showAttributes: ->
     attributesTemplate = HandlebarsTemplates['item_attributes'](@item)
-    @$el.find(".item__attributes").first().html(attributesTemplate)
+    @$el.find(".item__attributes").first().html attributesTemplate
