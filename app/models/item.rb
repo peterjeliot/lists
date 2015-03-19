@@ -5,6 +5,10 @@ class Item < ActiveRecord::Base
 
   accepts_nested_attributes_for :children
 
+  default_scope -> {
+    order(position: :asc)
+  }
+
   scope :root, -> {
     where(parent_id: nil)
   }

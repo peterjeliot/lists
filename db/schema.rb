@@ -11,13 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150313234647) do
+ActiveRecord::Schema.define(version: 20150318192529) do
 
   create_table "items", force: :cascade do |t|
     t.integer "parent_id"
     t.string  "title"
     t.text    "content"
     t.integer "value"
+    t.integer "position"
   end
 
 end
