@@ -22,7 +22,7 @@ Initial feature list:
 - the user can collapse the nested item views (like closing a folder in a file explorer)
 - the user can edit the title and content values of each item and save the state to the database
 - the user can drag and drop to reorder the items within a list
-- the user can drag and drop to next an item under a different list
+- the user can drag and drop to nest an item under a different list
 
 #### Parameters
 
