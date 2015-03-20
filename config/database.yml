@@ -22,10 +22,6 @@ test:
 
 production:
   <<: *default
-  database: lists_db
-
-production:
-  <<: *default
   database: Lists_production
   username: Lists
   password: <%= ENV['LISTS_DATABASE_PASSWORD'] %>
