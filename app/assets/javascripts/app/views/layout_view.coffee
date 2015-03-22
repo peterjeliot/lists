@@ -3,7 +3,7 @@ class App.views.LayoutView extends Backbone.View
     @items = opts.data
     @childViews = (new App.views.ItemView(item) for item in @items) || []
     @render()
-    console.log @flattenItems(@items)
+    @flatItems = @flattenItems(@items)
 
   render: ->
     @$el.html HandlebarsTemplates['layout']()
@@ -15,27 +15,44 @@ class App.views.LayoutView extends Backbone.View
       connectWith: ".main-list, .main-list ol"
       placeholder: "ui-state-highlight"
       distance: 10
-      start: (event, ui) ->
+      start: (event, ui) =>
         ui.placeholder.height ui.item.height()
-      stop: @rebuildItems
+      stop: (event, ui) =>
+        @rebuildItems()
+        parentId = ui.item.parent().parent().parent().attr("id") || null
+        parentItem = @flatItems[parentId]
+        childId = ui.item.attr("id")
+        childItem = @flatItems[childId]
+        $.ajax
+          type: "PATCH"
+          url: "/items/#{childId}"
+          data:
+            item:
+              parent_id: parentId
 
   rebuildItems: (event, ui) =>
-    # parentId = event.target.parentElement.parentElement.id
-    # parentItem =
-    @rebuildChildren @items, @childViews, @flattenItems(@items)
-    console.log @items
-
-  rebuildChildren: (list, views) ->
-    $(views).each (ind, view) =>
-      item = view.item
-      item.position = ind
-      list.push(item)
+    $(".main-list ol").each (ind, el) =>
+      id = el.parentElement.parentElement.id
+      item = @flatItems[id]
+      childIds = $(el).sortable("toArray")
       item.children = []
-      @rebuildChildren(item.children, view.childViews)
+      childIds.forEach (id) =>
+        item.children.push(@flatItems[id])
+    $(".main-list").each (ind, el) =>
+      childIds = $(el).sortable("toArray")
+      @items = []
+      childIds.forEach (id) =>
+        @items.push(@flatItems[id])
 
   flattenItems: (items, result = {}) ->
-    # Take a nested list, return a hash with key=id
+    # Take a nested list, return a hash with key=id, val=item
     items.forEach (item) =>
       result[item.id] = item
       @flattenItems(item.children, result)
     result
+
+  saveItems: ->
+    $.ajax
+      type: "POST"
+      url: "items"
+      data: JSON.stringify(@items)
