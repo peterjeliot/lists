@@ -42,7 +42,7 @@ class App.views.LayoutView extends Backbone.View
       @flattenItems(item.children, result)
     result
 
-  saveItems: ->
+  saveOrder: (event, ui) ->
     # Super long because it's navigating the DOM.
     # Not ideal becase this depends on how the HTML is structured.
     parentId = ui.item.parent().parent().parent().attr("id") || null
