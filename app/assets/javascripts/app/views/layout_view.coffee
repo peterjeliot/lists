@@ -22,13 +22,14 @@ class App.views.LayoutView extends Backbone.View
         @saveOrder(event, ui)
 
   rebuildItems: (event, ui) =>
+    # Rebuild the nested @items object
     $(".main-list ol").each (ind, el) =>
-      id = el.parentElement.parentElement.id
+      id = @findParent(el).attr("id")
       item = @flatItems[id]
       childIds = $(el).sortable("toArray")
       item.children = []
       childIds.forEach (id) =>
-        item.children.push(@flatItems[id])
+        item.children.push @flatItems[id]
     $(".main-list").each (ind, el) =>
       childIds = $(el).sortable("toArray")
       @items = []
@@ -43,9 +44,7 @@ class App.views.LayoutView extends Backbone.View
     result
 
   saveOrder: (event, ui) ->
-    # Super long because it's navigating the DOM.
-    # Not ideal becase this depends on how the HTML is structured.
-    parentId = ui.item.parent().parent().parent().attr("id") || null
+    parentId = @findParent(ui.item).attr("id") || null
     childId = ui.item.attr("id")
     # Update order
     ui.item.siblings().andSelf().each (ind, el) ->
@@ -62,3 +61,11 @@ class App.views.LayoutView extends Backbone.View
       data:
         item:
           parent_id: parentId
+
+  findParent: (el) ->
+    # This navigates up the DOM until it finds the parent ID
+    # The loop helps prevent breakage if the HTML layout changes
+    parentNode = $(el).parent()
+    while typeof parentNode.attr("id") == "undefined" && !parentNode.hasClass("main-list")
+      parentNode = parentNode.parent()
+    parentNode
