@@ -19,16 +19,7 @@ class App.views.LayoutView extends Backbone.View
         ui.placeholder.height ui.item.height()
       stop: (event, ui) =>
         @rebuildItems()
-        parentId = ui.item.parent().parent().parent().attr("id") || null
-        parentItem = @flatItems[parentId]
-        childId = ui.item.attr("id")
-        childItem = @flatItems[childId]
-        $.ajax
-          type: "PATCH"
-          url: "/items/#{childId}"
-          data:
-            item:
-              parent_id: parentId
+        @saveOrder(event, ui)
 
   rebuildItems: (event, ui) =>
     $(".main-list ol").each (ind, el) =>
@@ -52,7 +43,22 @@ class App.views.LayoutView extends Backbone.View
     result
 
   saveItems: ->
+    # Super long because it's navigating the DOM.
+    # Not ideal becase this depends on how the HTML is structured.
+    parentId = ui.item.parent().parent().parent().attr("id") || null
+    childId = ui.item.attr("id")
+    # Update order
+    ui.item.siblings().andSelf().each (ind, el) ->
+      $.ajax
+        type: "PATCH"
+        url: "/items/#{el.id}"
+        data:
+          item:
+            position: ind
+    # Update the parent
     $.ajax
-      type: "POST"
-      url: "items"
-      data: JSON.stringify(@items)
+      type: "PATCH"
+      url: "/items/#{childId}"
+      data:
+        item:
+          parent_id: parentId
