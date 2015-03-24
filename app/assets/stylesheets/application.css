@@ -21,6 +21,6 @@
   min-width: 100px;
 }
 
-.item__children::after {
+.main-list::after, .item__children::after {
   content: "(Drag here to insert at this level)"
 }
